@@ -121,3 +121,75 @@ document.addEventListener('keydown', function (event) {
 
 // Initialize display
 display.placeholder = '0';
+
+// Tooltip functionality
+function showInfo() {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.innerHTML = '💻 Developed by<br><strong>Aditya Vishwakarma</strong>';
+    document.body.appendChild(tooltip);
+
+    const infoBtn = document.querySelector('.info-btn');
+    const rect = infoBtn.getBoundingClientRect();
+
+    tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+    tooltip.style.top = (rect.top - 60) + 'px';
+    tooltip.style.transform = 'translateX(-50%) translateY(10px)';
+
+    // Show tooltip
+    setTimeout(() => {
+        tooltip.classList.add('show');
+    }, 10);
+
+    // Remove tooltip after 3 seconds
+    setTimeout(() => {
+        tooltip.classList.remove('show');
+        setTimeout(() => {
+            if (tooltip.parentNode) {
+                document.body.removeChild(tooltip);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Add hover effect for info button
+document.addEventListener('DOMContentLoaded', function () {
+    const infoBtn = document.querySelector('.info-btn');
+    let hoverTimeout;
+    let tooltip;
+
+    infoBtn.addEventListener('mouseenter', function () {
+        hoverTimeout = setTimeout(() => {
+            // Remove existing tooltip if any
+            if (tooltip && tooltip.parentNode) {
+                document.body.removeChild(tooltip);
+            }
+
+            tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.innerHTML = '💻 Developed by<br><strong>Aditya Vishwakarma</strong>';
+            document.body.appendChild(tooltip);
+
+            const rect = infoBtn.getBoundingClientRect();
+            tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+            tooltip.style.top = (rect.top - 60) + 'px';
+            tooltip.style.transform = 'translateX(-50%) translateY(10px)';
+
+            setTimeout(() => {
+                tooltip.classList.add('show');
+            }, 10);
+        }, 500);
+    });
+
+    infoBtn.addEventListener('mouseleave', function () {
+        clearTimeout(hoverTimeout);
+        if (tooltip) {
+            tooltip.classList.remove('show');
+            setTimeout(() => {
+                if (tooltip && tooltip.parentNode) {
+                    document.body.removeChild(tooltip);
+                }
+            }, 300);
+        }
+    });
+});
